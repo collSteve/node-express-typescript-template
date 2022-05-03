@@ -1,12 +1,6 @@
 import express, {Express} from "express";
 import path from "path";
 
-// import router from "./routes/posts";
-// import DataBase from "../DB/db";
-
-// const db_obj: DataBase = new DataBase();
-// db_obj.connectDB();
-
 const expressApp:Express = express();
 
 expressApp.use(express.json());
@@ -38,8 +32,6 @@ expressApp.use((req, res, next)=>{
 expressApp.get("/test", (req: any,res: { send: (arg0: string) => any; })=>{
     return res.send("test successed");
 });
-
-// expressApp.use("/api/posts", router)
 
 expressApp.get('/*',  function(req: any, res: { sendFile: (arg0: string, arg1: { root: string; }) => void; }, next: any) {
     res.sendFile('index.html', { root: public_folder_path }); 
