@@ -4,3 +4,8 @@ export enum GameType {
     Multi_singles,
     Multi_groups
 }
+
+export class GameMove {
+
+}
+
