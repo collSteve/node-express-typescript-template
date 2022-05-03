@@ -1,18 +1,19 @@
 import Server from "./server/server";
 import SocketServer from "./socket/socket-server";
 
-export class App {
-    private server:Server|null = null;
-    private socketServer:SocketServer|null = null;
+const PORT = process.env.PORT || 4000;
 
-    public initServer(port: number) {
-        this.server = new Server(port);
-        this.server.start();
-        this.socketServer = new SocketServer(this.server.getHttpServer());
-    }
+export class App {
+  private server: Server | null = null;
+  private socketServer: SocketServer | null = null;
+
+  public initServer(port: number | string) {
+    console.info(`App::initServer( ${port} ) - start`);
+    this.server = new Server(port);
+    this.server.start();
+    this.socketServer = new SocketServer(this.server.getHttpServer());
+  }
 }
 
 const app = new App();
-app.initServer(4000);
-
-
+app.initServer(PORT);
