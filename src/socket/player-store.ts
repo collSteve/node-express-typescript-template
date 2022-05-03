@@ -1,10 +1,10 @@
-import { PlayerModel } from "../models/game_player";
+import { UserModel } from "../models/user";
 
 export class PlayerStore {
-    private players: Map<string, PlayerModel>;
+    private players: Map<string, UserModel>;
 
     constructor() {
-        this.players = new Map<string, PlayerModel>();
+        this.players = new Map<string, UserModel>();
     }
 
     public getPlayer(playerId:string) {
@@ -23,7 +23,7 @@ export class PlayerStore {
             throw new Error(`Player with id ${playerId} already exist.`);
             return;
         }
-        const player = new PlayerModel(playerId);
+        const player = new UserModel(playerId);
         this.players.set(playerId, player);
     }
 }

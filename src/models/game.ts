@@ -1,9 +1,10 @@
-import { GameType, GameUserInfo } from "./game_users_info_model";
+import { GameType } from "./game_users_info_model";
+import { PlayerModel } from "./player";
 
 export class GameModel {
     private gameType: GameType;
     private gameId:string;
-    private users: Set<GameUserInfo>;
+    private players: Set<PlayerModel>;
     private maxUserCount: number;
     private userCount: number = 0;
 
@@ -12,16 +13,16 @@ export class GameModel {
         this.gameId = gameId;
         this.maxUserCount = maxUserCount;
 
-        this.users = new Set<GameUserInfo>();
+        this.players = new Set<PlayerModel>();
     }
 
-    public addUser(user:GameUserInfo) {
+    public addUser(player:PlayerModel) {
         if (this.userCount>=this.maxUserCount) {
             throw new Error("Fail to add new user to game: reached max user count in game."); // fail to add
             return;
         }    
 
-        this.users.add(JSON.parse(JSON.stringify(user)));
+        this.players.add(JSON.parse(JSON.stringify(player)));
         this.userCount++;
     }
 

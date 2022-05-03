@@ -1,5 +1,5 @@
 
-export class PlayerModel {
+export class UserModel {
     private userId: string;
     private games: Set<string>;
 
