@@ -14,12 +14,25 @@ export class GameService {
     private gamesList: GameModel[];
     private playersList: PlayerModel[];
 
-    constructor() {
+    private static instance: GameService|null = null;
+
+    public static getInstance() {
+        if (this.instance == null) {
+            this.instance = new GameService();
+        }
+        return this.instance;
+    }
+
+    private constructor() {
         this.gamesList = [];
         this.playersList = [];
     }
 
-    public createGame(creator:UserModel, gameType:GameType, userCount?:number, creatorMoveFirst:boolean=true) {
+    public createGameForUser(creatorId:string, gameType:GameType) {
+
+    }
+
+    createGame(creator:UserModel, gameType:GameType, userCount?:number, creatorMoveFirst:boolean=true) {
         // create game
         const NeededGameClass = gameTypeToClass.get(gameType);
         if (!NeededGameClass) throw new Error("GameType does not exist or it does not has a according game type.");
