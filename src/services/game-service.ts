@@ -31,5 +31,22 @@ export class GameService {
         const creatorPlayer = new PlayerModel(creator.getUserId(), creatorMoveFirst, gameId);
 
         newGame.addPlayer(creatorPlayer);
+
+        this.gamesList.push(newGame);
+        this.playersList.push(creatorPlayer);
+    }
+
+    joinUserToGame(player:PlayerModel, gameType:GameType, gameId: string) {
+        const game:GameModel = this.getGameById(gameId);
+        game.addPlayer(player);
+    }
+
+    getGameById(gameId:string):GameModel {
+        this.gamesList.forEach((game,i)=>{
+            if (gameId === game.getGameId()){
+                return game;
+            }
+        });
+        throw new Error(`Game with gameId ${gameId} does not exist`);
     }
 }

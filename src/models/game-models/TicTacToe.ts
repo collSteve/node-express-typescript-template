@@ -11,5 +11,4 @@ export class TicTacToeModel extends GameModel{
     public isGameEnded(): boolean {
         throw new Error("Method not implemented.");
     }
-    
 }
