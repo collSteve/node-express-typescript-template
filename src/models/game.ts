@@ -40,6 +40,7 @@ export abstract class GameModel {
         }
 
         this.players.add(JSON.parse(JSON.stringify(player)));
+        player.setGameId(this.gameId);
         this.userCount++;
 
         if (this.userCount >= this.maxUserCount) {
@@ -49,6 +50,14 @@ export abstract class GameModel {
 
     public getGameId() {
         return this.gameId;
+    }
+
+    public getGameState() {
+        return this.gameState;
+    }
+
+    public getGameType() {
+        return this.gameType;
     }
     
     public abstract isMoveValid(move: GameMove): boolean
