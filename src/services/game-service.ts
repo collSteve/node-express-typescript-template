@@ -50,6 +50,7 @@ export class GameService {
 
         // create player
         const newPlayer = new PlayerModel(user.getUserId());
+        this.userPlayersMap.set(userId, newPlayer);
 
         const successfullyJoined = await this.tryJoinPlayerToExistingGame(newPlayer, gameType);
 
@@ -70,6 +71,7 @@ export class GameService {
         newGame.addPlayer(creatorPlayer);
     }
 
+    // async due to database implementation in later
     private async tryJoinPlayerToExistingGame(player: PlayerModel, gameType:GameType) {
         for (const [gameId, game] of Object.entries(this.gamesMap)) {
             if (game.getGameType() === gameType && game.getGameState() == GameState.WaitForPlayersToJoin) {
