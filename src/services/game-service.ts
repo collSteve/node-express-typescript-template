@@ -36,7 +36,7 @@ export class GameService {
     }
 
     public createGameForUser(creatorId:string, gameType:GameType, currentMove=true, maxUserCount?:number) {
-        const creator = this.globalUserService.getUserById(creatorId);
+        const creator = this.globalUserService.getUserById(creatorId); // throw user not exist error
 
         // create player for creator
         const creatorPlayer = new PlayerModel(creator.getUserId(), currentMove);
@@ -46,8 +46,10 @@ export class GameService {
     }
 
     public async joinUserToGame(userId:string, gameType:GameType) {
+        const user = this.globalUserService.getUserById(userId); // throw user not exist error
+
         // create player
-        const newPlayer = new PlayerModel(userId);
+        const newPlayer = new PlayerModel(user.getUserId());
 
         const successfullyJoined = await this.tryJoinPlayerToExistingGame(newPlayer, gameType);
 
@@ -78,8 +80,8 @@ export class GameService {
                     if (e instanceof MaximumOlayerExceededError) {
                         return false;
                     }
+                    return false;
                 }
-                break;
             }
         }
         return false;
