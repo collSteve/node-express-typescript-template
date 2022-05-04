@@ -8,4 +8,8 @@ export class PlayerModel {
         this.currentMove = currentMove;
         this.gameId = gameId;
     }
+
+    public isCurrentMove() {
+        return this.currentMove;
+    }
 }
