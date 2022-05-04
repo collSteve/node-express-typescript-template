@@ -21,11 +21,11 @@ export class GameService {
 
     public createGame(creator:UserModel, gameType:GameType, userCount?:number, creatorMoveFirst:boolean=true) {
         // create game
-        const GameClass = gameTypeToClass.get(gameType);
-        if (!GameClass) throw new Error("GameType does not exist or it does not has a according game type.");
+        const NeededGameClass = gameTypeToClass.get(gameType);
+        if (!NeededGameClass) throw new Error("GameType does not exist or it does not has a according game type.");
 
         const gameId = crypto.randomBytes(64).toString("hex");  // game id generation
-        const newGame = new GameClass(gameType, gameId, userCount);
+        const newGame = new NeededGameClass(gameType, gameId, userCount);
         
         // create a player for user
         const creatorPlayer = new PlayerModel(creator.getUserId(), creatorMoveFirst, gameId);
