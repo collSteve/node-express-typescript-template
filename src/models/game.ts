@@ -9,6 +9,7 @@ export enum GameState {
 }
 
 export abstract class GameModel {
+    public static readonly DEFAULT_MAX_USER_COUNT = 2; 
     private gameType: GameType;
     private gameId:string;
     private players: Set<PlayerModel>;
@@ -17,7 +18,7 @@ export abstract class GameModel {
 
     private gameState: GameState;
 
-    constructor(gameType: GameType, gameId: string, maxUserCount:number) {
+    constructor(gameType: GameType, gameId: string, maxUserCount:number = GameModel.DEFAULT_MAX_USER_COUNT) {
         this.gameType = gameType;
         this.gameId = gameId;
         this.maxUserCount = maxUserCount;
