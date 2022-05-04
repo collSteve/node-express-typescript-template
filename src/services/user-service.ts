@@ -67,6 +67,14 @@ export default class UserService {
     return updatedUser;
   }
 
+  public getUserById(userId: string) {
+    const user = this.users.get(userId);
+    if (user) {
+      return user;
+    }
+    throw new UserDoesNotExistError(`User with Id ${userId} does not exist.`);
+  }
+
   /**
    * Finds user with specified user id
    * @param {string} userId - the user id of the user to find

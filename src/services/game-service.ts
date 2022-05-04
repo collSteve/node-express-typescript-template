@@ -5,6 +5,8 @@ import { PlayerModel } from "../models/player";
 import UserModel from "../models/user";
 import * as crypto from "crypto";
 import UserService from "./user-service";
+import { InvalidGameTypeError } from "../errors/invalid-game-type-error";
+import {GameDoesNotExistError} from "../errors/game-does-not-exist-error"
 
 type GameClass = {new(gameType: GameType, gameId: string, maxUserCount?:number):  GameModel};
 
@@ -12,8 +14,8 @@ const gameTypeToClass: Map<GameType, GameClass> = new Map<GameType, GameClass>()
 gameTypeToClass.set(GameType.TicTacToe, TicTacToeModel);
 
 export class GameService {
-    private gamesList: GameModel[];
-    private playersList: PlayerModel[];
+    private gamesMap: Map<string, GameModel>;
+    private userPlayersMap: Map<string, PlayerModel>; // all players created for a user
 
     private static instance: GameService|null = null;
 
@@ -27,30 +29,26 @@ export class GameService {
     }
 
     private constructor() {
-        this.gamesList = [];
-        this.playersList = [];
+        this.gamesMap = new Map<string, GameModel>();
+        this.userPlayersMap = new Map<string, PlayerModel>();
         this.globalUserService = UserService.getInstance(); // DI later
     }
 
-    public createGameForUser(creatorId:string, gameType:GameType) {
-        
-    }
+    public createGameForUser(creatorId:string, gameType:GameType, currentMove=true, maxUserCount?:number) {
+        const creator = this.globalUserService.getUserById(creatorId);
 
-    createGame(creator:UserModel, gameType:GameType, userCount?:number, creatorMoveFirst:boolean=true) {
-        // create game
         const NeededGameClass = gameTypeToClass.get(gameType);
-        if (!NeededGameClass) throw new Error("GameType does not exist or it does not has a according game type.");
+        if (!NeededGameClass) throw new InvalidGameTypeError("GameType does not exist or it does not has a according game type.");
 
+
+        // create a game of gameType
         const gameId = crypto.randomBytes(64).toString("hex");  // game id generation
-        const newGame = new NeededGameClass(gameType, gameId, userCount);
-        
-        // create a player for user
-        const creatorPlayer = new PlayerModel(creator.getUserId(), creatorMoveFirst, gameId);
+        const newGame = new NeededGameClass(gameType, gameId, maxUserCount);
+        this.gamesMap.set(gameId, newGame);
 
-        newGame.addPlayer(creatorPlayer);
-
-        this.gamesList.push(newGame);
-        this.playersList.push(creatorPlayer);
+        // create player for creator
+        const creatorPlayer = new PlayerModel(creator.getUserId(), currentMove, gameId);
+        this.userPlayersMap.set(creatorId, creatorPlayer);
     }
 
     joinUserToGame(player:PlayerModel, gameType:GameType, gameId: string) {
@@ -59,11 +57,11 @@ export class GameService {
     }
 
     getGameById(gameId:string):GameModel {
-        this.gamesList.forEach((game,i)=>{
-            if (gameId === game.getGameId()){
-                return game;
-            }
-        });
-        throw new Error(`Game with gameId ${gameId} does not exist`);
+        const game = this.gamesMap.get(gameId);
+        if (game) {
+            return game;
+        }
+
+        throw new GameDoesNotExistError(`Game with gameId ${gameId} does not exist`);
     }
 }
