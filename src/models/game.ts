@@ -28,7 +28,7 @@ export abstract class GameModel {
         this.gameState = GameState.WaitForPlayersToJoin;
     }
 
-    public addUser(player:PlayerModel) {
+    public addPlayer(player:PlayerModel) {
         if (this.userCount>=this.maxUserCount) {
             throw new Error("Fail to add new player to game: reached max user count in game."); // fail to add
             return;

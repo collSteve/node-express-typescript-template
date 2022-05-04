@@ -29,5 +29,7 @@ export class GameService {
         
         // create a player for user
         const creatorPlayer = new PlayerModel(creator.getUserId(), creatorMoveFirst, gameId);
+
+        newGame.addPlayer(creatorPlayer);
     }
 }
