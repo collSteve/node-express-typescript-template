@@ -2,7 +2,7 @@ import { GameModel } from "../models/game";
 import { TicTacToeModel } from "../models/game-models/TicTacToe";
 import { GameType } from "../models/game_users_info_model";
 import { PlayerModel } from "../models/player";
-import { UserModel } from "../models/user";
+import UserModel from "../models/user";
 import * as crypto from "crypto";
 
 type GameClass = {new(gameType: GameType, gameId: string, maxUserCount?:number):  GameModel};
