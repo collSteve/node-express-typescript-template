@@ -7,6 +7,15 @@ import UserDoesNotExistError from "../errors/user-does-not-exist-error";
 export default class UserService {
   private users: Map<string, UserModel> = new Map();
 
+  private static instance: UserService|null = null;
+
+  public static getInstance() {
+    if (this.instance == null) {
+        this.instance = new UserService();
+    }
+    return this.instance;
+}
+
   /**
    * Creates a new user if there does not already exist a user with the given id
    * @param {string} userId - the user id of the user to create (must be unique)

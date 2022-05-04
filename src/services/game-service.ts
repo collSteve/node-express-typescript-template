@@ -4,6 +4,7 @@ import { GameType } from "../models/game_users_info_model";
 import { PlayerModel } from "../models/player";
 import UserModel from "../models/user";
 import * as crypto from "crypto";
+import UserService from "./user-service";
 
 type GameClass = {new(gameType: GameType, gameId: string, maxUserCount?:number):  GameModel};
 
@@ -16,6 +17,8 @@ export class GameService {
 
     private static instance: GameService|null = null;
 
+    private globalUserService:UserService;
+
     public static getInstance() {
         if (this.instance == null) {
             this.instance = new GameService();
@@ -26,10 +29,11 @@ export class GameService {
     private constructor() {
         this.gamesList = [];
         this.playersList = [];
+        this.globalUserService = UserService.getInstance(); // DI later
     }
 
     public createGameForUser(creatorId:string, gameType:GameType) {
-
+        
     }
 
     createGame(creator:UserModel, gameType:GameType, userCount?:number, creatorMoveFirst:boolean=true) {
