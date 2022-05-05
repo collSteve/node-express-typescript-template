@@ -89,7 +89,7 @@ export class GameService {
         return false;
     }
 
-    getGameById(gameId:string):GameModel {
+    public getGameById(gameId:string):GameModel {
         const game = this.gamesMap.get(gameId);
         if (game) {
             return game;
