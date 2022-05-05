@@ -11,7 +11,8 @@ import { MaximumOlayerExceededError } from "../errors/maximum-player-exceeded-er
 import { GameStatus } from "../models/game-status";
 import { PlayerStatus } from "../models/player-status";
 import { deepCopy } from "../utils/data-manipulation";
-import { ISingletonStatic } from "../utils/singleton";
+import { staticImplements } from "../utils/static-implements";
+// import { ISingletonStatic } from "../utils/singleton";
 
 type GameClass<GameInfoType, PlayerGameInfoType> = {new(gameType: GameType, gameId: string, maxUserCount?:number):  GameModel<GameInfoType,PlayerGameInfoType>};
 type PlayerModelClass<PlayerGameInfoType> = {new(userId:string, currentMove?:boolean, gameId?:string|null): PlayerModel<PlayerGameInfoType>};

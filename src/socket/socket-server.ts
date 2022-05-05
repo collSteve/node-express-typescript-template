@@ -1,7 +1,7 @@
 import { Namespace, Server, Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import http from "http";
-import { GameService } from "../services/game-service";
+import { GameService, IGameService } from "../services/game-service";
 
 export default class SocketServer {
 	private io: Server<DefaultEventsMap,DefaultEventsMap,DefaultEventsMap,any>;
@@ -9,12 +9,20 @@ export default class SocketServer {
 	private gameIo: Namespace<DefaultEventsMap,DefaultEventsMap,DefaultEventsMap,any>;
 	private sessionIo: Namespace<DefaultEventsMap,DefaultEventsMap,DefaultEventsMap,any>;
 
-	constructor(httpServer:http.Server, gameService:GameService) {
+	private gameService:GameService;
+
+	constructor(httpServer:http.Server) {
 		this.io = new Server({});
+		this.gameService = GameService.getInstance();
 
 		this.gameIo = this.io.of("/game");
 		this.sessionIo = this.io.of("/sessions");
 
+		this.httpServer = httpServer;
+		this.io.listen(httpServer);
+	}
+
+	private initializeSocketConnections() {
 		this.gameIo.on("connection", (socket)=>{
 			socket.emit("new user joins");
 
@@ -24,15 +32,10 @@ export default class SocketServer {
 		});
 
 		this.io.on("connection", (socket) => {
-			this.onConnection(socket);
+			
 		});
 
-		this.httpServer = httpServer;
-		this.io.listen(httpServer);
-	}
-
-	onConnection(socket:Socket<DefaultEventsMap,DefaultEventsMap,DefaultEventsMap,any>) {
-
+		
 	}
 
 

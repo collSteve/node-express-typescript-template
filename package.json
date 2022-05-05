@@ -7,7 +7,7 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node build/index.js",
     "build": "rimraf ./build && tsc",
-    "dev:start": "nodemon"
+    "start:dev": "nodemon"
   },
   "author": "Ke Ren",
   "license": "ISC",
