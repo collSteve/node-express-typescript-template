@@ -11,7 +11,7 @@ import { MaximumOlayerExceededError } from "../errors/maximum-player-exceeded-er
 import { GameStatus } from "../models/game-status";
 import { PlayerStatus } from "../models/player-status";
 
-type GameClass = {new(gameType: GameType, gameId: string, maxUserCount?:number):  GameModel};
+type GameClass = {new(gameType: GameType, gameId: string, maxUserCount?:number):  GameModel<any,any>};
 
 const gameTypeToClass: Map<GameType, GameClass> = new Map<GameType, GameClass>();
 gameTypeToClass.set(GameType.TicTacToe, TicTacToeModel);
@@ -25,7 +25,7 @@ interface IGameService {
 
 
 export class GameService implements IGameService {
-    private gamesMap: Map<string, GameModel>;
+    private gamesMap: Map<string, GameModel<any,any>>;
     private userPlayersMap: Map<string, PlayerModel>; // all players created for a user
 
     private static instance: GameService|null = null;
@@ -40,7 +40,7 @@ export class GameService implements IGameService {
     }
 
     private constructor() {
-        this.gamesMap = new Map<string, GameModel>();
+        this.gamesMap = new Map<string, GameModel<any, any>>();
         this.userPlayersMap = new Map<string, PlayerModel>();
         this.globalUserService = UserService.getInstance(); // DI later
     }
@@ -103,7 +103,7 @@ export class GameService implements IGameService {
         return false;
     }
 
-    public getGameById(gameId:string):GameModel {
+    public getGameById(gameId:string): GameModel<any,any> {
         const game = this.gamesMap.get(gameId);
         if (game) {
             return game;

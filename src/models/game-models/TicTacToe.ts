@@ -1,7 +1,15 @@
 import { GameModel } from "../game";
+import { GameStatus } from "../game-status";
 import { GameMove } from "../game_users_info_model";
+import { PlayerStatus } from "../player-status";
 
-export class TicTacToeModel extends GameModel{
+export class TicTacToeModel extends GameModel<TicTacToeGameInfoType, TicTacToePlayerGameInfoType>{
+    public getGameStatus(): GameStatus<TicTacToeGameInfoType> {
+        throw new Error("Method not implemented.");
+    }
+    public getPlayersStatus(): PlayerStatus<TicTacToePlayerGameInfoType>[] {
+        throw new Error("Method not implemented.");
+    }
     public isMoveValid(move: GameMove): boolean {
         throw new Error("Method not implemented.");
     }

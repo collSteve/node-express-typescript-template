@@ -1,5 +1,7 @@
+import { GameStatus } from "./game-status";
 import { GameMove, GameType } from "./game_users_info_model";
 import { PlayerModel } from "./player";
+import { PlayerStatus } from "./player-status";
 
 export enum GameState {
     WaitForPlayersToJoin,
@@ -8,7 +10,7 @@ export enum GameState {
     Ended
 }
 
-export abstract class GameModel {
+export abstract class GameModel<GameInfoType, PlayerGameInfoType> {
     public static readonly DEFAULT_MAX_USER_COUNT = 2; 
     private gameType: GameType;
     private gameId:string;
@@ -65,4 +67,8 @@ export abstract class GameModel {
     public abstract updateGame(move: GameMove): void 
 
     public abstract isGameEnded(): boolean
+
+    public abstract getGameStatus(): GameStatus<GameInfoType>
+
+    public abstract getPlayersStatus(): PlayerStatus<PlayerGameInfoType>[]
 }
