@@ -19,5 +19,9 @@ export abstract class PlayerModel<PlayerGameInfoType> {
         this.gameId = gameId;
     }
 
+    public getUserId():string {
+        return this.userId;
+    }
+
     public abstract getPlayerStatus():PlayerStatus<PlayerGameInfoType>
 }

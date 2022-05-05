@@ -61,6 +61,14 @@ export abstract class GameModel<GameInfoType, PlayerGameInfoType> {
     public getGameType() {
         return this.gameType;
     }
+
+    public getPlayerUserIds():string[] {
+        const ids:string[] = [];
+        this.players.forEach((player)=>{
+            ids.push(player.getUserId());
+        });
+        return ids;
+    }
     
     public abstract isMoveValid(move: GameMove): boolean
 

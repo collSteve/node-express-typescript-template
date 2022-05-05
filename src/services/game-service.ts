@@ -145,8 +145,13 @@ export class GameService implements IGameServiceDynamic {
     }
 
     public getAllUserIdsInGame(gameId: string): string[] {
-        throw new Error("Method not implemented.");
+        const game:GameModel<any,any>|undefined = this.gamesMap.get(gameId);
+
+        if (!game) throw new GameDoesNotExistError(`Game with gameId ${gameId} does not exist`);
+
+        return game.getPlayerUserIds();
     }
+    
     public async updateGame(gameId: string, move: GameMove): Promise<{ gameStatus: GameStatus<any>; playersStatus: PlayerStatus<any>; isGameEnded: boolean; }> {
         throw new Error("Method not implemented.");
     }
