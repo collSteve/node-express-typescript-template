@@ -12,3 +12,7 @@ export class TicTacToeModel extends GameModel{
         throw new Error("Method not implemented.");
     }
 }
+
+export type TicTacToePlayerGameInfoType = {x:number, y:number}[];
+
+export type TicTacToeGameInfoType = {x:number, y:number, checked:boolean, checkedByPlayerId:string|null}[][]; // 3x3 board

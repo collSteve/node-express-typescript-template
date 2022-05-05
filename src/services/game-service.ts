@@ -1,6 +1,6 @@
 import { GameModel, GameState } from "../models/game";
 import { TicTacToeModel } from "../models/game-models/TicTacToe";
-import { GameType } from "../models/game_users_info_model";
+import { GameMove, GameType } from "../models/game_users_info_model";
 import { PlayerModel } from "../models/player";
 import UserModel from "../models/user";
 import * as crypto from "crypto";
@@ -8,13 +8,23 @@ import UserService from "./user-service";
 import { InvalidGameTypeError } from "../errors/invalid-game-type-error";
 import {GameDoesNotExistError} from "../errors/game-does-not-exist-error"
 import { MaximumOlayerExceededError } from "../errors/maximum-player-exceeded-error";
+import { GameStatus } from "../models/game-status";
+import { PlayerStatus } from "../models/player-status";
 
 type GameClass = {new(gameType: GameType, gameId: string, maxUserCount?:number):  GameModel};
 
 const gameTypeToClass: Map<GameType, GameClass> = new Map<GameType, GameClass>();
 gameTypeToClass.set(GameType.TicTacToe, TicTacToeModel);
 
-export class GameService {
+interface IGameService {
+    createGameForUser(creatorId:string, gameType:GameType, currentMove:boolean, maxUserCount?:number): {gameStatus:GameStatus<any>, playerStatus:PlayerStatus<any>};
+    joinUserToGame(userId:string, gameType:GameType):{gameStatus:GameStatus<any>, playerStatus:PlayerStatus<any>};
+    GetAllUserIdsInGame(gameId:string):string[];
+    UpdateGame(gameId:string, move:GameMove):{gameStatus:GameStatus<any>, playersStatus:PlayerStatus<any>, isGameEnded:boolean};
+}
+
+
+export class GameService implements IGameService {
     private gamesMap: Map<string, GameModel>;
     private userPlayersMap: Map<string, PlayerModel>; // all players created for a user
 
@@ -43,6 +53,10 @@ export class GameService {
         this.userPlayersMap.set(creatorId, creatorPlayer);
 
         this.createGameForPlayer(creatorPlayer, gameType, currentMove, maxUserCount);
+
+
+
+        return {};//stub;
     }
 
     public async joinUserToGame(userId:string, gameType:GameType) {
