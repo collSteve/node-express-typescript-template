@@ -11,6 +11,7 @@ import { MaximumOlayerExceededError } from "../errors/maximum-player-exceeded-er
 import { GameStatus } from "../models/game-status";
 import { PlayerStatus } from "../models/player-status";
 import { deepCopy } from "../utils/data-manipulation";
+import { ISingletonStatic } from "../utils/singleton";
 
 type GameClass<GameInfoType, PlayerGameInfoType> = {new(gameType: GameType, gameId: string, maxUserCount?:number):  GameModel<GameInfoType,PlayerGameInfoType>};
 type PlayerModelClass<PlayerGameInfoType> = {new(userId:string, currentMove?:boolean, gameId?:string|null): PlayerModel<PlayerGameInfoType>};
@@ -23,15 +24,21 @@ type GamePlayerPair<GameInfoType, PlayerGameInfoType> = {
 const gameTypeToClass: Map<GameType, GamePlayerPair<any,any>> = new Map<GameType, GamePlayerPair<any,any>>();
 gameTypeToClass.set(GameType.TicTacToe, {gameClass:TicTacToeModel, playerClass:TicTacToePlayerModel});
 
-interface IGameService {
+export interface IGameServiceDynamic {
     createGameForUser(creatorId:string, gameType:GameType, currentMove:boolean, maxUserCount?:number): Promise<{gameStatus:GameStatus<any>, playerStatus:PlayerStatus<any>}>;
     joinUserToGame(userId:string, gameType:GameType):Promise<{gameStatus:GameStatus<any>, playerStatus:PlayerStatus<any>}>;
     getAllUserIdsInGame(gameId:string):string[];
     updateGame(gameId:string, move:GameMove):Promise<{gameStatus:GameStatus<any>, playersStatus:PlayerStatus<any>, isGameEnded:boolean}>;
 }
 
+export interface IGameServiceStatic<T> {
+    getInstance():T;
+}
 
-export class GameService implements IGameService {
+export type IGameService = IGameServiceDynamic & IGameServiceStatic<any>;
+
+@staticImplements<IGameServiceStatic<GameService>>()
+export class GameService implements IGameServiceDynamic {
     private gamesMap: Map<string, GameModel<any,any>>;
     private userPlayersMap: Map<string, PlayerModel<any>>; // all players created for a user
 

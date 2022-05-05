@@ -1,6 +1,7 @@
 import { Namespace, Server, Socket } from "socket.io";
 import { DefaultEventsMap } from "socket.io/dist/typed-events";
 import http from "http";
+import { GameService } from "../services/game-service";
 
 export default class SocketServer {
 	private io: Server<DefaultEventsMap,DefaultEventsMap,DefaultEventsMap,any>;
@@ -8,7 +9,7 @@ export default class SocketServer {
 	private gameIo: Namespace<DefaultEventsMap,DefaultEventsMap,DefaultEventsMap,any>;
 	private sessionIo: Namespace<DefaultEventsMap,DefaultEventsMap,DefaultEventsMap,any>;
 
-	constructor(httpServer:http.Server) {
+	constructor(httpServer:http.Server, gameService:GameService) {
 		this.io = new Server({});
 
 		this.gameIo = this.io.of("/game");
