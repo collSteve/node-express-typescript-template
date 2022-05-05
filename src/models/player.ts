@@ -1,4 +1,6 @@
-export class PlayerModel {
+import { PlayerStatus } from "./player-status";
+
+export abstract class PlayerModel<PlayerGameInfoType> {
     private userId: string;
     private currentMove: boolean;
     private gameId: string|null;
@@ -16,4 +18,6 @@ export class PlayerModel {
     public setGameId(gameId:string) {
         this.gameId = gameId;
     }
+
+    public abstract getPlayerStatus():PlayerStatus<PlayerGameInfoType>
 }

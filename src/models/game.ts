@@ -14,7 +14,7 @@ export abstract class GameModel<GameInfoType, PlayerGameInfoType> {
     public static readonly DEFAULT_MAX_USER_COUNT = 2; 
     private gameType: GameType;
     private gameId:string;
-    private players: Set<PlayerModel>;
+    private players: Set<PlayerModel<PlayerGameInfoType>>;
     private maxUserCount: number;
     private userCount: number = 0;
 
@@ -25,12 +25,12 @@ export abstract class GameModel<GameInfoType, PlayerGameInfoType> {
         this.gameId = gameId;
         this.maxUserCount = maxUserCount;
 
-        this.players = new Set<PlayerModel>();
+        this.players = new Set<PlayerModel<PlayerGameInfoType>>();
 
         this.gameState = GameState.WaitForPlayersToJoin;
     }
 
-    public addPlayer(player:PlayerModel) {
+    public addPlayer(player:PlayerModel<PlayerGameInfoType>) {
         if (this.userCount>=this.maxUserCount) {
             throw new Error("Fail to add new player to game: reached max user count in game."); // fail to add
             return;

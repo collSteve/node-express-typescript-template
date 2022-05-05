@@ -1,6 +1,7 @@
 import { GameModel } from "../game";
 import { GameStatus } from "../game-status";
 import { GameMove } from "../game_users_info_model";
+import { PlayerModel } from "../player";
 import { PlayerStatus } from "../player-status";
 
 export class TicTacToeModel extends GameModel<TicTacToeGameInfoType, TicTacToePlayerGameInfoType>{
@@ -21,6 +22,14 @@ export class TicTacToeModel extends GameModel<TicTacToeGameInfoType, TicTacToePl
     }
 }
 
+
+
 export type TicTacToePlayerGameInfoType = {x:number, y:number}[];
 
 export type TicTacToeGameInfoType = {x:number, y:number, checked:boolean, checkedByPlayerId:string|null}[][]; // 3x3 board
+
+export class TicTacToePlayerModel extends PlayerModel<TicTacToePlayerGameInfoType>{
+    public getPlayerStatus(): PlayerStatus<TicTacToePlayerGameInfoType> {
+        throw new Error("Method not implemented.");
+    }
+}
