@@ -26,8 +26,8 @@ gameTypeToClass.set(GameType.TicTacToe, {gameClass:TicTacToeModel, playerClass:T
 interface IGameService {
     createGameForUser(creatorId:string, gameType:GameType, currentMove:boolean, maxUserCount?:number): Promise<{gameStatus:GameStatus<any>, playerStatus:PlayerStatus<any>}>;
     joinUserToGame(userId:string, gameType:GameType):Promise<{gameStatus:GameStatus<any>, playerStatus:PlayerStatus<any>}>;
-    GetAllUserIdsInGame(gameId:string):string[];
-    UpdateGame(gameId:string, move:GameMove):{gameStatus:GameStatus<any>, playersStatus:PlayerStatus<any>, isGameEnded:boolean};
+    getAllUserIdsInGame(gameId:string):string[];
+    updateGame(gameId:string, move:GameMove):Promise<{gameStatus:GameStatus<any>, playersStatus:PlayerStatus<any>, isGameEnded:boolean}>;
 }
 
 
@@ -136,10 +136,10 @@ export class GameService implements IGameService {
         throw new GameDoesNotExistError(`Game with gameId ${gameId} does not exist`);
     }
 
-    GetAllUserIdsInGame(gameId: string): string[] {
+    public getAllUserIdsInGame(gameId: string): string[] {
         throw new Error("Method not implemented.");
     }
-    UpdateGame(gameId: string, move: GameMove): { gameStatus: GameStatus<any>; playersStatus: PlayerStatus<any>; isGameEnded: boolean; } {
+    public async updateGame(gameId: string, move: GameMove): Promise<{ gameStatus: GameStatus<any>; playersStatus: PlayerStatus<any>; isGameEnded: boolean; }> {
         throw new Error("Method not implemented.");
     }
 }
