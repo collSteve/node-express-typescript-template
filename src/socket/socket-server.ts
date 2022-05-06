@@ -23,29 +23,7 @@ export default class SocketServer {
 		this.gameService = GameService.getInstance();
 		this.userService = UserService.getInstance();
 
-		// testing
-		this.userService.createNewUser("123", "123");
-		this.gameService.createGameForUser("123", GameType.TicTacToe, true, 2)
-		.then((status)=>{
-			const gameId = status.gameStatus.gameId;
-			console.log(`GameID: ${gameId}: ${this.gameService.getAllUserIdsInGame(gameId)}`);
-
-			// new player
-			this.userService.createNewUser("abc", "abc");
-			this.gameService.joinUserToGame("abc", GameType.TicTacToe)
-			.then((status)=>{
-				const gameId = status.gameStatus.gameId;
-				console.log(`GameID: ${gameId}: ${this.gameService.getAllUserIdsInGame(gameId)}`);
-			
-				// new player
-				this.userService.createNewUser("ijk", "ijk");
-				this.gameService.joinUserToGame("ijk", GameType.TicTacToe)
-				.then((status)=>{
-					const gameId = status.gameStatus.gameId;
-					console.log(`GameID: ${gameId}: ${this.gameService.getAllUserIdsInGame(gameId)}`);
-				});
-			});
-		});
+		
 		
 		
 		this.gameIo = this.io.of("/game");
@@ -55,6 +33,9 @@ export default class SocketServer {
 
 		this.httpServer = httpServer;
 		this.io.listen(httpServer);
+
+		// testing
+		this.testJoinCreateGame();
 	}
 
 	private initializeSocketConnections() {
@@ -82,6 +63,31 @@ export default class SocketServer {
 			});
 		});
 		
+	}
+
+	/*
+		Dummy Test for testing join and create game
+	*/
+	private async testJoinCreateGame() {
+		// testing
+		console.log("==== Test join create game ====");
+
+		this.userService.createNewUser("pa", "123");
+		this.userService.createNewUser("pb", "abc");
+		this.userService.createNewUser("pc", "ijk");
+		this.userService.createNewUser("pd", "ijk");
+		this.userService.createNewUser("pe", "ijk");
+
+		await this.gameService.createGameForUser("pa", GameType.TicTacToe, true, 2);
+		await this.gameService.joinUserToGame("pb", GameType.TicTacToe);
+		await this.gameService.joinUserToGame("pc", GameType.TicTacToe);
+		await this.gameService.joinUserToGame("pd", GameType.TicTacToe);
+		await this.gameService.joinUserToGame("pe", GameType.TicTacToe);
+
+		
+        for (const [gameId, game] of this.gameService.getAllGames().entries()) {
+			console.log(`${gameId}= players: [${game.getPlayerUserIds()}], Game ready: ${game.getGameState()==GameState.WaitToStart}`);
+		}
 	}
 
 	onUserConnetion(socket:SessionSocketType) {
