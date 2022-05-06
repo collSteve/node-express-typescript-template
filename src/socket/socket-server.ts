@@ -51,6 +51,8 @@ export default class SocketServer {
 		this.gameIo = this.io.of("/game");
 		this.sessionIo = this.io.of("/sessions");
 
+		this.initializeSocketConnections();
+
 		this.httpServer = httpServer;
 		this.io.listen(httpServer);
 	}
@@ -91,7 +93,7 @@ export default class SocketServer {
 	}
 
 	onUserRequestCreateGame(socket:SessionSocketType, createGameRequestInfo:any) {
-
+		console.log("Recieved client's request to create game");
 	}
 
 	onUserRequestGameMove(socket:SessionSocketType, gameMoveRequestInfo:any) {
@@ -101,8 +103,6 @@ export default class SocketServer {
 	onUserRequestQuitGame(socket:SessionSocketType, quitGameRequestInfo:any) {
 
 	}
-
-
 
 }
 
