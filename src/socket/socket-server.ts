@@ -22,11 +22,10 @@ export default class SocketServer {
 
 		// testing
 		this.userService.createNewUser("123", "123");
-		this.gameService.createGameForUser("123", GameType.TicTacToe, true)
+		this.gameService.createGameForUser("123", GameType.TicTacToe, true, 2)
 		.then((status)=>{
 			const gameId = status.gameStatus.gameId;
 			console.log(`GameID: ${gameId}: ${this.gameService.getAllUserIdsInGame(gameId)}`);
-			console.log("GameState: ", this.gameService.getGameById(gameId).getGameState()==GameState.WaitForPlayersToJoin);
 
 			// new player
 			this.userService.createNewUser("abc", "abc");
