@@ -91,7 +91,6 @@ export class GameService implements IGameServiceDynamic {
         const newPlayer = new NeededGamePlayerClass.playerClass(user.getUserId());
         this.userPlayersMap.set(userId, newPlayer);
 
-         
         const joinResult = await this.tryJoinPlayerToExistingGame(newPlayer, gameType);
 
         if (joinResult && joinResult.successfullyJoined) {
@@ -119,19 +118,24 @@ export class GameService implements IGameServiceDynamic {
     // async due to database implementation in later
     private async tryJoinPlayerToExistingGame<PlayerGameInfoType>(player: PlayerModel<PlayerGameInfoType>, gameType:GameType)
     : Promise<{ successfullyJoined: boolean, gamePlayerStatus:{gameStatus:GameStatus<any>, playerStatus:PlayerStatus<any>}}|null> {
-        for (const [gameId, game] of Object.entries(this.gamesMap)) {
-            if (game.getGameType() === gameType && game.getGameState() == GameState.WaitForPlayersToJoin) {
+        for (const [gameId, game] of this.gamesMap.entries()) {
+            console.log(`In Join: ${gameId} -- ${game}`);
+            if (game.getGameType() === gameType && game.getGameState() === GameState.WaitForPlayersToJoin) {
                 try {
                     game.addPlayer(player);
                     return {successfullyJoined:true, gamePlayerStatus:{gameStatus:game.getGameStatus(),playerStatus:player.getPlayerStatus()}};
                 } catch(e:unknown) {
-                    if (e instanceof MaximumOlayerExceededError) {
-                        return null;
-                    }
-                    return null;
+                    // if (e instanceof MaximumOlayerExceededError) {
+                    //     return null;
+                    // }
+                    // return null;
+                    console.log("error cauther in join");
                 }
+            } else {
+                console.log(`Join u: ${gameId} -- Type: ${gameType}, game state: ${game.getGameState() === GameState.WaitForPlayersToJoin}`);
             }
         }
+        console.log("Join Failed!!!!");
         return null;
     }
 

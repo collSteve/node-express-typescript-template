@@ -12,13 +12,14 @@ export enum GameState {
 
 export abstract class GameModel<GameInfoType, PlayerGameInfoType> {
     public static readonly DEFAULT_MAX_USER_COUNT = 2; 
-    private gameType: GameType;
-    private gameId:string;
-    private players: Set<PlayerModel<PlayerGameInfoType>>;
-    private maxUserCount: number;
-    private userCount: number = 0;
+    protected gameType: GameType;
+    protected gameId:string;
+    protected players: Set<PlayerModel<PlayerGameInfoType>>;
+    protected maxUserCount: number;
+    protected userCount: number = 0;
 
-    private gameState: GameState;
+    protected gameState: GameState;
+    protected currentGameInfo: GameInfoType|null=null;
 
     constructor(gameType: GameType, gameId: string, maxUserCount:number = GameModel.DEFAULT_MAX_USER_COUNT) {
         this.gameType = gameType;
@@ -41,7 +42,7 @@ export abstract class GameModel<GameInfoType, PlayerGameInfoType> {
             return;
         }
 
-        this.players.add(JSON.parse(JSON.stringify(player)));
+        this.players.add(player);
         player.setGameId(this.gameId);
         this.userCount++;
 
@@ -65,7 +66,8 @@ export abstract class GameModel<GameInfoType, PlayerGameInfoType> {
     public getPlayerUserIds():string[] {
         const ids:string[] = [];
         this.players.forEach((player)=>{
-            ids.push(player.getUserId());
+            const id:string = player.getUserId();
+            ids.push(id);
         });
         return ids;
     }
