@@ -159,4 +159,8 @@ export class GameService implements IGameServiceDynamic {
     public async updateGame(gameId: string, move: GameMove): Promise<{ gameStatus: GameStatus<any>; playersStatus: PlayerStatus<any>; isGameEnded: boolean; }> {
         throw new Error("Method not implemented.");
     }
+
+    public getAllGames() {
+        return new Map(this.gamesMap);
+    }
 }
