@@ -6,6 +6,9 @@ import UserService from "../services/user-service";
 import { GameType } from "../models/game_users_info_model";
 import { GameState } from "../models/game";
 
+type GameSocketType = Socket<DefaultEventsMap,DefaultEventsMap,DefaultEventsMap,any>;
+type SessionSocketType = Socket<DefaultEventsMap,DefaultEventsMap,DefaultEventsMap,any>;
+
 export default class SocketServer {
 	private io: Server<DefaultEventsMap,DefaultEventsMap,DefaultEventsMap,any>;
 	private httpServer: http.Server;
@@ -53,20 +56,52 @@ export default class SocketServer {
 	}
 
 	private initializeSocketConnections() {
-		this.gameIo.on("connection", (socket)=>{
-			socket.emit("new user joins");
+		this.io.on("connection", (socket)=>{
+			this.onUserConnetion(socket);
 
-			socket.on("move play", (moveInfo)=>{
-				socket.id;
+		});
+
+		this.gameIo.on("connection", (socket)=>{
+
+			socket.on("user request create game", (createGameRequestInfo:any)=>{
+				this.onUserRequestCreateGame(socket, createGameRequestInfo);
+			});
+
+			socket.on("user request join game", (joinGameRequestInfo:any)=>{
+				this.onUserRequestJoinGame(socket, joinGameRequestInfo);
+			});
+
+			socket.on("user played move", (gameMoveRequestInfo:any)=>{
+				this.onUserRequestGameMove(socket, gameMoveRequestInfo);
+			});
+
+			socket.on("user request quit game", (quitGameRequestInfo:any)=>{
+				this.onUserRequestQuitGame(socket, quitGameRequestInfo);
 			});
 		});
-
-		this.io.on("connection", (socket) => {
-			
-		});
-
 		
 	}
+
+	onUserConnetion(socket:SessionSocketType) {
+
+	}
+
+	onUserRequestJoinGame(socket:SessionSocketType, joinGameRequestInfo:any) {
+
+	}
+
+	onUserRequestCreateGame(socket:SessionSocketType, createGameRequestInfo:any) {
+
+	}
+
+	onUserRequestGameMove(socket:SessionSocketType, gameMoveRequestInfo:any) {
+
+	}
+
+	onUserRequestQuitGame(socket:SessionSocketType, quitGameRequestInfo:any) {
+
+	}
+
 
 
 }
