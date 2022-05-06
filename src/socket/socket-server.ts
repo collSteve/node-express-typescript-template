@@ -93,7 +93,7 @@ export default class SocketServer {
 	}
 
 	onUserRequestCreateGame(socket:SessionSocketType, createGameRequestInfo:any) {
-		console.log("Recieved client's request to create game");
+		console.log(`Recieved client's request to create game: <${createGameRequestInfo}>`);
 	}
 
 	onUserRequestGameMove(socket:SessionSocketType, gameMoveRequestInfo:any) {

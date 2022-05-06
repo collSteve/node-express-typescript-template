@@ -11,5 +11,5 @@ gameSocket.on("connect", ()=>{
 });
 
 function requestCreateGame() {
-    gameSocket.emit("user request create game", null);
+    gameSocket.emit("user request create game", "[A dummy request for creating a game test]");
 }

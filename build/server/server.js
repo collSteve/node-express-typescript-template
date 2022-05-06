@@ -9,15 +9,27 @@ const expressApp_1 = __importDefault(require("./expressApp"));
 // import { Post, PostsGetRequestResponseObject } from "../models/post.model";
 class Server {
     constructor(port) {
-        this.port = (process.env.PORT || port);
+        this.port = port;
         this.expressApp = expressApp_1.default;
         this.expressApp.set("port", this.port);
         this.httpServer = http_1.default.createServer(this.expressApp);
+        //test
+        // setInterval(()=>{
+        //   console.log("======Games Log=======");
+        //   const gameService = GameService.getInstance();
+        //   const games = gameService.getAllGames();
+        //   for (const [gameId, game] of games.entries()) {
+        //     console.log(`GameID: ${gameId}: ${gameService.getAllUserIdsInGame(gameId)}`);
+        //   }
+        // }, 10000);
     }
     start() {
         this.httpServer.on("error", (err) => this.onError(err));
         this.httpServer.on("listening", () => this.onListening());
         this.httpServer.listen(this.port);
+    }
+    getHttpServer() {
+        return this.httpServer;
     }
     onError(error) {
         if (error.syscall !== "listen") {

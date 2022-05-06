@@ -5,10 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const path_1 = __importDefault(require("path"));
-// import router from "./routes/posts";
-// import DataBase from "../DB/db";
-// const db_obj: DataBase = new DataBase();
-// db_obj.connectDB();
 const expressApp = (0, express_1.default)();
 expressApp.use(express_1.default.json());
 expressApp.use(express_1.default.urlencoded({
@@ -30,7 +26,6 @@ expressApp.use((req, res, next) => {
 expressApp.get("/test", (req, res) => {
     return res.send("test successed");
 });
-// expressApp.use("/api/posts", router)
 expressApp.get('/*', function (req, res, next) {
     res.sendFile('index.html', { root: public_folder_path });
 });
