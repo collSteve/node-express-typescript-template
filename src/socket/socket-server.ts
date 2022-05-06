@@ -34,11 +34,18 @@ export default class SocketServer {
 			.then((status)=>{
 				const gameId = status.gameStatus.gameId;
 				console.log(`GameID: ${gameId}: ${this.gameService.getAllUserIdsInGame(gameId)}`);
+			
+				// new player
+				this.userService.createNewUser("ijk", "ijk");
+				this.gameService.joinUserToGame("ijk", GameType.TicTacToe)
+				.then((status)=>{
+					const gameId = status.gameStatus.gameId;
+					console.log(`GameID: ${gameId}: ${this.gameService.getAllUserIdsInGame(gameId)}`);
+				});
 			});
 		});
 		
 		
-
 		this.gameIo = this.io.of("/game");
 		this.sessionIo = this.io.of("/sessions");
 

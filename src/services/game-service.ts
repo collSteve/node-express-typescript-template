@@ -119,7 +119,7 @@ export class GameService implements IGameServiceDynamic {
     private async tryJoinPlayerToExistingGame<PlayerGameInfoType>(player: PlayerModel<PlayerGameInfoType>, gameType:GameType)
     : Promise<{ successfullyJoined: boolean, gamePlayerStatus:{gameStatus:GameStatus<any>, playerStatus:PlayerStatus<any>}}|null> {
         for (const [gameId, game] of this.gamesMap.entries()) {
-            console.log(`In Join: ${gameId} -- ${game}`);
+            // console.log(`In Join: ${gameId} -- ${game}`);
             if (game.getGameType() === gameType && game.getGameState() === GameState.WaitForPlayersToJoin) {
                 try {
                     game.addPlayer(player);
@@ -129,13 +129,13 @@ export class GameService implements IGameServiceDynamic {
                     //     return null;
                     // }
                     // return null;
-                    console.log("error cauther in join");
+                    // console.log("error cauther in join");
                 }
             } else {
-                console.log(`Join u: ${gameId} -- Type: ${gameType}, game state: ${game.getGameState() === GameState.WaitForPlayersToJoin}`);
+                // console.log(`Join u: ${gameId} -- Type: ${gameType}, game state: ${game.getGameState() === GameState.WaitForPlayersToJoin}`);
             }
         }
-        console.log("Join Failed!!!!");
+        // console.log("Join Failed!!!!");
         return null;
     }
 
