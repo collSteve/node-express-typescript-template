@@ -4,6 +4,7 @@ import UserAlreadyExistsError from '../errors/user-already-exists-error';
 import UserDoesNotExistError from '../errors/user-does-not-exist-error';
 import TemporaryUser from '../models/temporary-user';
 import PermanentUser from '../models/permanent-user';
+import { GameService } from './game-service';
 
 /**
  * A class that handles all User services
@@ -12,10 +13,13 @@ export default class UserService {
   private static readonly USER_ALREADY_EXISTS_MSG: string = `The user with the given id and/or username already exists`;
   private static readonly USER_DOES_NOT_EXIST_MSG: string = `The user with the specified id does not exist`;
   private static instance: UserService | null = null;
+  private readonly gloablGameService: GameService;
   private users: Map<string, User> = new Map();
 
   /** @constructor */
-  private constructor() {}
+  private constructor() {
+    this.gloablGameService = GameService.getInstance();
+  }
 
   /**
    * Ensures only one instance of UserService is created
@@ -62,15 +66,20 @@ export default class UserService {
   }
 
   /**
-   * Removes user with user id
-   * @param {string} userId - the id of the user to remove
-   * @throws {UserDoesNotExistError} throws UserDoesNotExistError if there does not exist a player with given user id
+   * Removes user with the specified id, and removes user from all games the user is associated with
+   * @param {string} userId
+   * @throws {UserDoesNotExistError} Throws error if there does not exist a player with specified user id
    */
-  public deleteUser(userId: string) {
-    const ERROR_MESSAGE = `Player with id: ${userId}, does not exist`;
+  public deleteUser(userId: string): void {
     if (!this.users.has(userId)) {
-      throw new UserDoesNotExistError(ERROR_MESSAGE);
+      throw new UserDoesNotExistError(UserService.USER_DOES_NOT_EXIST_MSG);
     }
+
+    // remove user from all games the he/she is associated with:
+    const userGames: string[] | undefined = this.users.get(userId)?.getAllGameAssociations();
+    this.gloablGameService.removeUserFromGames(userId);
+
+    // delete user:
     this.users.delete(userId);
   }
 
