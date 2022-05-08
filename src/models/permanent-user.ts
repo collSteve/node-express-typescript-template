@@ -12,12 +12,18 @@ export default class PermanentUser extends User {
 
   /**
    * @constructor
+   * @param {string} userId - the user id of the user
    * @param {string} userName - the userName of the permanent user
    * @param {string} email - the email of the user
    * @param {string} password - the password for user
    */
-  constructor(userName: string, email: string, password: string) {
-    super();
+  constructor(
+    userId: string,
+    userName: string,
+    email: string,
+    password: string
+  ) {
+    super(userId);
     this.userName = userName;
     this.email = email;
     this.password = password;

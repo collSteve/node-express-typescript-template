@@ -1,20 +1,27 @@
-import UserModel from "../models/user";
-import UserAlreadyExistsError from "../errors/user-already-exists-error";
-import UserDoesNotExistError from "../errors/user-does-not-exist-error";
+import User from '../models/user';
+import UserAlreadyExistsError from '../errors/user-already-exists-error';
+import UserDoesNotExistError from '../errors/user-does-not-exist-error';
 
-// A class that handles all User services
-// A server can only have one instance of this class
+/**
+ * A class that handles all User services
+ */
 export default class UserService {
-  private users: Map<string, UserModel> = new Map();
+  private static instance: UserService | null = null;
+  private users: Map<string, User> = new Map();
 
-  private static instance: UserService|null = null;
+  /** @constructor */
+  private constructor() {}
 
+  /**
+   * Ensures only one instance of UserService is created
+   * @returns {UserService}
+   */
   public static getInstance() {
     if (this.instance == null) {
-        this.instance = new UserService();
+      this.instance = new UserService();
     }
     return this.instance;
-}
+  }
 
   /**
    * Creates a new user if there does not already exist a user with the given id
@@ -24,10 +31,12 @@ export default class UserService {
    */
   public createNewUser(userId: string, password: string) {
     const ERROR_MESSAGE = `Player with id: ${userId}, already exist`;
+
     if (this.users.has(userId)) {
       throw new UserAlreadyExistsError(ERROR_MESSAGE);
     }
-    this.users.set(userId, new UserModel(userId, password));
+
+    this.users.set(userId, new User(userId, password));
   }
 
   /**

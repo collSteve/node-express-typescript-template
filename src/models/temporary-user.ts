@@ -7,9 +7,12 @@ import User from './user';
 export default class TemporaryUser extends User {
   private readonly MAX_GAMES = 1;
 
-  /** constructor */
-  constructor() {
-    super();
+  /**
+   * @constructor
+   * @param {string} userId - the user id of the user
+   */
+  constructor(userId: string) {
+    super(userId);
   }
 
   /** @override */

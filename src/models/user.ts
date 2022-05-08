@@ -1,13 +1,18 @@
 import * as crypto from 'crypto';
 
-// A class representing a User
-export default abstract class UserModel {
+/**
+ * A class representing a User
+ */
+export default abstract class User {
   protected userId: string;
   protected games: Set<string> = new Set<string>(); // set of game ids
 
-  /** @constructor */
-  constructor() {
-    this.userId = this.generateUserId();
+  /**
+   * @constructor
+   * @param {string} userId - the user id of the user
+   */
+  constructor(userId: string) {
+    this.userId = userId;
   }
 
   /**
@@ -58,11 +63,11 @@ export default abstract class UserModel {
     return [...this.games];
   }
 
-  /**
-   * Generates random user Id
-   * @returns  {string}
-   */
-  private generateUserId(): string {
-    return crypto.randomBytes(64).toString('hex');
-  }
+  // /**
+  //  * Generates random user Id
+  //  * @returns  {string}
+  //  */
+  // private generateUserId(): string {
+  //   return crypto.randomBytes(64).toString('hex');
+  // }
 }
