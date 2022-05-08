@@ -1,18 +1,18 @@
-// A class representing a User
-export default class UserModel {
-  private readonly MAX_GAMES = 5;
+import * as crypto from 'crypto';
+
+/**
+ * A class representing a User
+ */
+export default abstract class User {
   protected userId: string;
-  private password: string;
-  private games: Set<string> = new Set<string>(); // set of game ids
+  protected games: Set<string> = new Set<string>(); // set of game ids
 
   /**
    * @constructor
-   * @param {string} userId - the user id
-   * @param {string} password - password associated with user account
+   * @param {string} userId - the user id of the user
    */
-  constructor(userId: string, password: string) {
+  constructor(userId: string) {
     this.userId = userId;
-    this.password = password;
   }
 
   /**
@@ -20,8 +20,8 @@ export default class UserModel {
    * otherwise reject new game creation
    * @param {string} gameId - game id to be linked with user
    */
-  public joinGame(gameId: string) {
-    if (this.games.size < this.MAX_GAMES) {
+  public joinGame(gameId: string): void {
+    if (this.games.size < this.getMaxGames()) {
       this.games.add(gameId);
     }
   }
@@ -30,7 +30,7 @@ export default class UserModel {
    * Removes a game that this user is associated with
    * @param {string} gameId - the gameId of the game to be removed
    */
-  public removeGame(gameId: string) {
+  public leaveGame(gameId: string): void {
     this.games.delete(gameId);
   }
 
@@ -39,20 +39,35 @@ export default class UserModel {
    * @param {string} gameId
    * @returns {boolean}
    */
-  public hasGame(gameId: string) {
+  public hasGame(gameId: string): boolean {
     return this.games.has(gameId);
   }
 
-  // getters
+  /**
+   * Removes all games that the player is currently associated with
+   */
+  public removeAllGameAssociations(): void {
+    this.games.clear();
+  }
+
+  /**
+   * Getters:
+   */
   public getUserId() {
     return this.userId;
   }
 
-  public getPassword() {
-    return this.password;
+  public abstract getMaxGames(): number;
+
+  public getAllGameAssociations(): string[] {
+    return [...this.games];
   }
 
-  public updatePassword(newPassword: string) {
-    this.password = newPassword;
-  }
+  // /**
+  //  * Generates random user Id
+  //  * @returns  {string}
+  //  */
+  // private generateUserId(): string {
+  //   return crypto.randomBytes(64).toString('hex');
+  // }
 }

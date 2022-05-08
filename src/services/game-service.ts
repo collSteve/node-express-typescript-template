@@ -2,7 +2,7 @@ import { GameModel, GameState } from "../models/game";
 import { TicTacToeModel, TicTacToePlayerGameInfoType, TicTacToePlayerModel } from "../models/game-models/TicTacToe";
 import { GameMove, GameType } from "../models/game_users_info_model";
 import { PlayerModel } from "../models/player";
-import UserModel from "../models/user";
+import User from "../models/user";
 import * as crypto from "crypto";
 import UserService from "./user-service";
 import { InvalidGameTypeError } from "../errors/invalid-game-type-error";
