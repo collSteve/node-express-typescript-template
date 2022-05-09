@@ -1,3 +1,4 @@
+import { deepCopy } from "../utils/data-manipulation";
 import { GameStatus } from "./game-status";
 import { GameMove, GameType } from "./game_users_info_model";
 import { PlayerModel } from "./player";
@@ -78,7 +79,10 @@ export abstract class GameModel<GameInfoType, PlayerGameInfoType> {
 
     public abstract isGameEnded(): boolean
 
-    public abstract getGameStatus(): GameStatus<GameInfoType>
+    public getGameStatus(): GameStatus<GameInfoType> {
+        const currentGameInfo = deepCopy(this.currentGameInfo);
+        return {gameId:this.gameId, playerUserIds:this.getPlayerUserIds(),gameInfo:currentGameInfo};
+    }
 
     public abstract getPlayersStatus(): PlayerStatus<PlayerGameInfoType>[]
 }

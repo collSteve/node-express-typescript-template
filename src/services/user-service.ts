@@ -13,12 +13,13 @@ export default class UserService {
   private static readonly USER_ALREADY_EXISTS_MSG: string = `The user with the given id and/or username already exists`;
   private static readonly USER_DOES_NOT_EXIST_MSG: string = `The user with the specified id does not exist`;
   private static instance: UserService | null = null;
-  private readonly gloablGameService: GameService;
-  private users: Map<string, User> = new Map();
+  // private readonly gloablGameService: GameService;
+  private users: Map<string, User>;
 
   /** @constructor */
   private constructor() {
-    this.gloablGameService = GameService.getInstance();
+    // this.gloablGameService = GameService.getInstance();
+    this.users= new Map<string, User>();
   }
 
   /**
@@ -36,7 +37,7 @@ export default class UserService {
    * Creates new Temporary User
    * @throws {UserAlreadyExistsError} Throws error if there already exists a user with the same id
    */
-  public createTempUser(): void {
+  public createTempUser(): string {
     const newUserId: string = this.generateUserId();
 
     if (this.users.has(newUserId)) {
@@ -45,6 +46,7 @@ export default class UserService {
 
     const newUser: User = new TemporaryUser(newUserId);
     this.users.set(newUserId, newUser);
+    return newUserId;
   }
 
   /**
@@ -54,7 +56,7 @@ export default class UserService {
    * @param {string} password
    * @throws {UserAlreadyExistsError} Throws error if there already exists a user with the same id, username or email
    */
-  public createPermanentUser(userName: string, email: string, password: string): void {
+  public createPermanentUser(userName: string, email: string, password: string): string {
     const newUserId: string = this.generateUserId();
 
     if (this.users.has(newUserId) || !this.userNameUnique(userName) || !this.emailUnique(email)) {
@@ -63,6 +65,7 @@ export default class UserService {
 
     const newUser: User = new PermanentUser(newUserId, userName, email, password);
     this.users.set(newUserId, newUser);
+    return newUserId;
   }
 
   /**
@@ -77,7 +80,7 @@ export default class UserService {
 
     // remove user from all games the he/she is associated with:
     const userGames: string[] | undefined = this.users.get(userId)?.getAllGameAssociations();
-    this.gloablGameService.removeUserFromGames(userId);
+    // this.gloablGameService.removeUserFromGames(userId);
 
     // delete user:
     this.users.delete(userId);
@@ -101,7 +104,8 @@ export default class UserService {
    */
   public updateUserPassword(userId: string, password: string) {
     const userToUpdate = this.findUser(userId);
-    const updatedUser = userToUpdate.updatePassword(password);
+    // const updatedUser = userToUpdate.updatePassword(password);
+    const updatedUser="";
     return updatedUser;
   }
 
