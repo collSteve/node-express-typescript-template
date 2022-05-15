@@ -1,5 +1,12 @@
 export type GameStatus<GameInfoType> = {
-    gameId: string,
-    playerUserIds: string[],
-    gameInfo:GameInfoType & {currentPlayersTurn:string[]}
+  gameId: string;
+  playerUserIds: string[];
+  gameInfo: GameInfoType & { currentPlayersTurn: string[] };
 };
+
+/**
+ * gameInfo: {
+ *      GameInfoType,
+ *      currentPlayersTurn: ["peter", "samantha"]
+ * }
+ */
