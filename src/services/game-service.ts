@@ -18,13 +18,13 @@ import { deepCopy } from '../utils/data-manipulation';
 import { staticImplements } from '../utils/static-implements';
 // import { ISingletonStatic } from "../utils/singleton";
 
-type GameClass<GameInfoType, PlayerGameInfoType> = {
+export type GameClass<GameInfoType, PlayerGameInfoType> = {
     new(gameType: GameType, gameId: string, maxUserCount?: number): GameModel<
         GameInfoType,
         PlayerGameInfoType
     >;
 };
-type PlayerModelClass<PlayerGameInfoType> = {
+export type PlayerModelClass<PlayerGameInfoType> = {
     new(
         userId: string,
         currentMove?: boolean,
@@ -41,6 +41,7 @@ const gameTypeToClass: Map<GameType, GamePlayerPair<any, any>> = new Map<
     GameType,
     GamePlayerPair<any, any>
 >();
+
 gameTypeToClass.set(GameType.TicTacToe, {
     gameClass: TicTacToeModel,
     playerClass: TicTacToePlayerModel,
@@ -62,6 +63,8 @@ export interface IGameServiceDynamic {
         playersStatus: PlayerStatus<any>;
         isGameEnded: boolean;
     }>;
+    
+    startGame(gameId:string):void;
 }
 
 export interface IGameServiceStatic<T> {
@@ -90,6 +93,9 @@ export class GameService implements IGameServiceDynamic {
         this.gamesMap = new Map<string, GameModel<any, any>>();
         this.userPlayersMap = new Map<string, PlayerModel<any>>();
         this.globalUserService = UserService.getInstance(); // DI later
+    }
+    startGame(gameId: string): void {
+        throw new Error('Method not implemented.');
     }
 
     public async createGameForUser(
