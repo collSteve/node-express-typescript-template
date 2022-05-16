@@ -1,3 +1,4 @@
+
 import { deepCopy } from "../utils/data-manipulation";
 import { GameStatus } from "./game-status";
 import { GameMove, GameType } from "./game_users_info_model";
@@ -5,10 +6,10 @@ import { PlayerModel } from "./player";
 import { PlayerStatus } from "./player-status";
 
 export enum GameState {
-    WaitForPlayersToJoin,
-    WaitToStart, // player loaded
-    Playing,
-    Ended
+	WaitForPlayersToJoin,
+	WaitToStart, // player loaded
+	Playing,
+	Ended,
 }
 
 export abstract class GameModel<GameInfoType, PlayerGameInfoType> {
@@ -86,3 +87,4 @@ export abstract class GameModel<GameInfoType, PlayerGameInfoType> {
 
     public abstract getPlayersStatus(): PlayerStatus<PlayerGameInfoType>[]
 }
+
