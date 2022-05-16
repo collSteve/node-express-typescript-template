@@ -1,8 +1,8 @@
 import { GameModel, GameState } from '../models/game';
 import {
-	TicTacToeModel,
-	TicTacToePlayerGameInfoType,
-	TicTacToePlayerModel,
+    TicTacToeModel,
+    TicTacToePlayerGameInfoType,
+    TicTacToePlayerModel,
 } from '../models/game-models/TicTacToe';
 import { GameMove, GameType } from '../models/game_users_info_model';
 import { PlayerModel } from '../models/player';

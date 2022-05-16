@@ -206,4 +206,3 @@ export default class UserService {
 		}
 		return true;
 	}
-}

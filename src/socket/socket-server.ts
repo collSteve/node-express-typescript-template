@@ -68,26 +68,32 @@ export default class SocketServer {
 	/*
 		Dummy Test for testing join and create game
 	*/
-	private async testJoinCreateGame() {
+	private async testJoinCreateGame(time:number = 5000) {
 		// testing
-		console.log("==== Test join create game ====");
 
-		this.userService.createNewUser("pa", "123");
-		this.userService.createNewUser("pb", "abc");
-		this.userService.createNewUser("pc", "ijk");
-		this.userService.createNewUser("pd", "ijk");
-		this.userService.createNewUser("pe", "ijk");
+		const id1 = this.userService.createPermanentUser("pa", "123@abc.com", "123");
+		const id2 = this.userService.createPermanentUser("pb", "1233@abc.com", "abc");
+		const id3 = this.userService.createPermanentUser("pc", "12343@abc.com", "ijk");
+		const id4 = this.userService.createPermanentUser("pd", "124334r3@abc.com", "ijk");
+		const id5 = this.userService.createPermanentUser("pe", "12frf3@abc.com", "ijk");
 
-		await this.gameService.createGameForUser("pa", GameType.TicTacToe, true, 2);
-		await this.gameService.joinUserToGame("pb", GameType.TicTacToe);
-		await this.gameService.joinUserToGame("pc", GameType.TicTacToe);
-		await this.gameService.joinUserToGame("pd", GameType.TicTacToe);
-		await this.gameService.joinUserToGame("pe", GameType.TicTacToe);
-
+		this.gameService.joinUserToGame(id1, GameType.TicTacToe).then(()=>{
+				this.gameService.joinUserToGame(id2, GameType.TicTacToe);
+				this.gameService.joinUserToGame(id3, GameType.TicTacToe);
+				this.gameService.joinUserToGame(id4, GameType.TicTacToe);
+				this.gameService.joinUserToGame(id5, GameType.TicTacToe);
+			}
+		);
 		
-        for (const [gameId, game] of this.gameService.getAllGames().entries()) {
-			console.log(`${gameId}= players: [${game.getPlayerUserIds()}], Game ready: ${game.getGameState()==GameState.WaitToStart}`);
-		}
+
+		setInterval(()=>{
+			console.log("==== Test join create game ====");
+
+			for (const [gameId, game] of this.gameService.getAllGames().entries()) {
+				console.log(`${gameId}= players: [${game.getPlayerUserIds()}], Game ready: ${game.getGameState()==GameState.WaitToStart}`);
+			}
+		}, time);
+        
 	}
 
 	onUserConnetion(socket:SessionSocketType) {
