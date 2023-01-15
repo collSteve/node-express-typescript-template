@@ -15,7 +15,7 @@ expressApp.use(express_1.default.static(public_folder_path));
 expressApp.use((req, res, next) => {
     const allowedOrigins = ["http://localhost:4200"];
     const origin = req.headers.origin;
-    console.log(origin + " requested");
+    console.log(origin + " requested http server");
     if (typeof origin === "string" && allowedOrigins.includes(origin)) {
         res.setHeader("Access-Control-Allow-Origin", origin);
     }
